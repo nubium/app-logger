@@ -1,0 +1,40 @@
+{
+	"name": "nubium/app-logger",
+	"description": "App logger",
+	"license": "proprietary",
+	"type": "library",
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"autoload": {
+		"psr-4": {
+			"Nubium\\AppLogger\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Nubium\\AppLogger\\Tests\\": "tests/"
+		}
+	},
+	"require": {
+		"php": "^8.1",
+		"psr/log": "^3.0|^1.0"
+	},
+	"require-dev": {
+		"ext-json": "*",
+		"phpunit/phpunit": "^9.5.7",
+		"phpstan/phpstan": "^1.6",
+		"phpstan/phpstan-phpunit": "^1.1",
+		"phpstan/extension-installer": "^1.0",
+		"php-mock/php-mock": "^2.3"
+	},
+	"suggest": {
+		"ext-uuid": "Required to use this package with UUID identifier",
+		"ext-json": "Required to use this package with JSON formatter"
+	},
+	"config": {
+		"sort-packages": true,
+		"allow-plugins": {
+			"phpstan/extension-installer": true
+		}
+	}
+}
