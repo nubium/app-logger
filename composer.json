@@ -22,9 +22,9 @@
 	"require-dev": {
 		"ext-json": "*",
 		"phpunit/phpunit": "^9.5.7",
-		"phpstan/phpstan": "^1.6",
+		"phpstan/phpstan": "^1.7",
 		"phpstan/phpstan-phpunit": "^1.1",
-		"phpstan/extension-installer": "^1.0",
+		"phpstan/extension-installer": "^1.1",
 		"php-mock/php-mock": "^2.3"
 	},
 	"suggest": {

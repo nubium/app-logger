@@ -34,7 +34,7 @@ class TextAppLoggerFormatter implements IAppLoggerFormatter
 	private function formatValue(mixed $value): string
 	{
 		switch (true) {
-			case is_bool($value): return (string)(int)$value;
+			case is_bool($value): return $value ? '1' : '0';
 			case is_scalar($value): return str_replace("\n", '\\n', (string)$value);
 			default:
 				$json = json_encode($value);

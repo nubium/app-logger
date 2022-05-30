@@ -15,7 +15,7 @@ class RandomIntAppLoggerIdentifier implements IAppLoggerIdentifier
 	 */
 	public function __construct()
 	{
-		$this->identifier = (string)random_int(100000000, 999999999);
+		$this->identifier = (string) random_int(100000000, 999999999);
 	}
 
 
