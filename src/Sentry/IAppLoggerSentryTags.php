@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Nubium\AppLogger\Sentry;
 
-interface IAppLoggerSentryContext
+interface IAppLoggerSentryTags
 {
 	/**
 	 * @return array<string, string>

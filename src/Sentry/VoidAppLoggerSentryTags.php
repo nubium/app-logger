@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Nubium\AppLogger\Sentry;
 
-class VoidAppLoggerSentryContext implements IAppLoggerSentryContext
+class VoidAppLoggerSentryTags implements IAppLoggerSentryTags
 {
 	/**
 	 * @inheritDoc

@@ -5,7 +5,7 @@ namespace Nubium\AppLogger\Sentry;
 
 use Nubium\AppLogger\Identifier\IAppLoggerIdentifier;
 
-class CommonAppLoggerSentryContext implements IAppLoggerSentryContext
+class CommonAppLoggerSentryTags implements IAppLoggerSentryTags
 {
 	public function __construct(private IAppLoggerIdentifier $identifier) {}
 
