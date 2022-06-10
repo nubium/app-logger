@@ -14,14 +14,10 @@ class FileAppLoggerDriverTest extends TestCase
 	 */
 	public function testSave(): void
 	{
-		/** @var non-empty-string|false $file */
-		$file = tempnam(sys_get_temp_dir(), 'app-logger');
-		if ($file === false) {
-			$this->fail(error_get_last()['message'] ?? 'can not create temp file');
-		}
+		$file = $this->createTempFile();
 
 		try {
-			$driver = new FileAppLoggerDriver($file);
+			$driver = new FileAppLoggerDriver($file, 0);
 			$driver->save('log1');
 			$driver->save('log2');
 
@@ -31,5 +27,33 @@ class FileAppLoggerDriverTest extends TestCase
 		}
 
 		$this->assertSame('log1' . PHP_EOL . 'log2' . PHP_EOL, $data);
+	}
+
+	public function testSaveWithLogRowLimit(): void
+	{
+		$file = $this->createTempFile();
+
+		try {
+			$driver = new FileAppLoggerDriver($file, 1);
+			$driver->save('abcd');
+
+			$this->fail('Log row length limit does not took effect.');
+		} catch (AppLoggerDriverException $e) {
+			$this->assertSame('File driver log row length "4" is bigger that limit "1"', $e->getMessage());
+		} finally {
+			unlink($file);
+		}
+	}
+
+
+	private function createTempFile(): string
+	{
+		/** @var non-empty-string|false $file */
+		$file = tempnam(sys_get_temp_dir(), 'app-logger');
+		if ($file === false) {
+			$this->fail(error_get_last()['message'] ?? 'can not create temp file');
+		}
+
+		return $file;
 	}
 }

@@ -9,9 +9,10 @@ class FileAppLoggerDriver implements IAppLoggerDriver
 {
 	/**
 	 * @param non-empty-string $filePath
+	 * @param int $logLengthLimit maximum log row length in bytes, 0 means no limit
 	 * @throws InvalidArgumentException
 	 */
-	public function __construct(private string $filePath)
+	public function __construct(private string $filePath, private int $logLengthLimit)
 	{
 		if (empty($this->filePath)) {
 			throw new InvalidArgumentException(self::class . '::filePath is empty');
@@ -26,6 +27,15 @@ class FileAppLoggerDriver implements IAppLoggerDriver
 	{
 		if (!is_scalar($data)) {
 			throw new AppLoggerDriverException('File driver can save only scalar values');
+		}
+
+		$logLength = strlen((string)$data);
+		if ($this->logLengthLimit && $logLength > $this->logLengthLimit) {
+			throw new AppLoggerDriverException(sprintf(
+				'File driver log row length "%d" is bigger that limit "%d"',
+				$logLength,
+				$this->logLengthLimit,
+			));
 		}
 
 		for ($i = 0; $i < 5; $i++) {
