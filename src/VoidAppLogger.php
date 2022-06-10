@@ -5,7 +5,24 @@ namespace Nubium\AppLogger;
 
 class VoidAppLogger implements IAppLogger
 {
-	public function store(array $data): void {}
-
+	/**
+	 * @inheritDoc
+	 */
 	public function collect(IAppLoggerField|string $key, mixed $value): void {}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function store(IAppLoggerField|string $key, mixed $value): void {}
+
+
+	/**
+	 * @inheritDoc
+	 */
+	public function bulkCollect(array $data): void {}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function bulkStore(array $data): void {}
 }

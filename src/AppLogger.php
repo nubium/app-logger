@@ -31,14 +31,34 @@ class AppLogger implements IAppLogger
 	/**
 	 * @inheritDoc
 	 */
-	public function store(array $data): void
-	{
-		$this->save($data);
-	}
-
 	public function collect(IAppLoggerField|string $key, mixed $value): void
 	{
 		$this->data[is_string($key) ? $key : $key->toString()] = $value;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function store(IAppLoggerField|string $key, mixed $value): void
+	{
+		$this->save([is_string($key) ? $key : $key->toString() => $value]);
+	}
+
+
+	/**
+	 * @inheritDoc
+	 */
+	public function bulkCollect(array $data): void
+	{
+		$this->data += $data;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function bulkStore(array $data): void
+	{
+		$this->save($data);
 	}
 
 

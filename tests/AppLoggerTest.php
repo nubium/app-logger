@@ -33,12 +33,19 @@ class AppLoggerTest extends TestCase
 		$logger->collect($this->createFieldName('log4'), [1,2,3,4]);
 		$logger->collect($this->createFieldName('log5'), ['a' => 4]);
 
+		$logger->bulkCollect([
+			'log6' => true,
+			'log7' => false,
+		]);
+
 		$this->assertSame([
 			'log1' => 'data1',
 			'log2' => 1234,
 			'log3' => 1.2,
 			'log4' => [1,2,3,4],
 			'log5' => ['a' => 4],
+			'log6' => true,
+			'log7' => false,
 		], $logger->getData());
 	}
 
@@ -46,6 +53,29 @@ class AppLoggerTest extends TestCase
 	 * @throws JsonException
 	 */
 	public function testStore(): void
+	{
+		$key = 'log';
+		$data = 'log_data';
+		$json = json_encode([$key => $data], flags: JSON_THROW_ON_ERROR);
+
+		$driver = $this->createDriverMock();
+		$driver->expects($this->once())->method('save')->with($json);
+		$formatter = $this->createFormatterMock();
+		$formatter->expects($this->once())->method('format')->willReturn($json);
+
+		(new AppLogger(
+			'app',
+			$this->createPsrLoggerMock(),
+			$driver,
+			$formatter,
+			$this->createIdentifierMock(),
+		))->store($key, $data);
+	}
+
+	/**
+	 * @throws JsonException
+	 */
+	public function testBulkStore(): void
 	{
 		$data = [
 			'log1' => 'data1',
@@ -64,7 +94,7 @@ class AppLoggerTest extends TestCase
 			$driver,
 			$formatter,
 			$this->createIdentifierMock(),
-		))->store($data);
+		))->bulkStore($data);
 	}
 
 	/**
@@ -92,7 +122,7 @@ class AppLoggerTest extends TestCase
 			$driverFactory(),
 			$formatterFactory(),
 			$this->createIdentifierMock(),
-		))->store(['a' => 'b']);
+		))->store('a', 'b');
 	}
 
 	/**
