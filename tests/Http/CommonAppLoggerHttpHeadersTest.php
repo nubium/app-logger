@@ -13,12 +13,12 @@ class CommonAppLoggerHttpHeadersTest extends TestCase
 	{
 		$identifier = new RandomIntAppLoggerIdentifier();
 
-		$context = (new CommonAppLoggerHttpHeaders('app', $identifier))->toArray();
+		$headers = (new CommonAppLoggerHttpHeaders('app', $identifier))->toArray();
 
 		$this->assertSame([
 			'X-Request-Id' => $identifier->toString(),
 			'X-App-Name' => 'app',
-		], $context);
+		], $headers);
 	}
 }
 
