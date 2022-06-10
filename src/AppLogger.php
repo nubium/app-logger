@@ -72,7 +72,6 @@ class AppLogger implements IAppLogger
 		}
 
 		$now = new DateTimeImmutable();
-		$data = $data + $this->getCommonData();
 
 		try {
 			$log = $this->formatter->format($this->appName, $now, $this->identifier, $data);
@@ -86,13 +85,5 @@ class AppLogger implements IAppLogger
 				'data' => $data,
 			]);
 		}
-	}
-
-	/**
-	 * @return array<string, mixed>
-	 */
-	private function getCommonData(): array
-	{
-		return ['memory_usage' => memory_get_peak_usage(true)];
 	}
 }
