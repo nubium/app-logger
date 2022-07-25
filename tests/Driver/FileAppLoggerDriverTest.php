@@ -29,6 +29,33 @@ class FileAppLoggerDriverTest extends TestCase
 		$this->assertSame('log1' . PHP_EOL . 'log2' . PHP_EOL, $data);
 	}
 
+	public function testPermissionDeniedError(): void
+	{
+		$fileName = $this->createTempFile();
+		// disallow writing
+		chmod($fileName, 0444);
+
+		$this->expectException(AppLoggerDriverException::class);
+		$this->expectExceptionMessage('Failed to open stream: Permission denied');
+
+		$driver = $this->getMockBuilder(FileAppLoggerDriver::class)
+			->setConstructorArgs([
+				'filePath' => $fileName,
+				'logLengthLimit' => 0
+			])
+			->onlyMethods(['usleep'])
+			->getMock();
+
+		$driver->expects($this->exactly(5))
+			->method('usleep');
+
+		try {
+			$driver->save('log1');
+		} finally {
+			unlink($fileName);
+		}
+	}
+
 	public function testSaveWithLogRowLimit(): void
 	{
 		$file = $this->createTempFile();
