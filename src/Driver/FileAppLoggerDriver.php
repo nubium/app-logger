@@ -44,13 +44,21 @@ class FileAppLoggerDriver implements IAppLoggerDriver
 			}
 
 			$error = error_get_last()['message'] ?? '';
-			if ($error !== 'Failed to open stream: Permission denied') {
+			if (!str_contains($error, 'Failed to open stream: Permission denied')) {
 				throw new AppLoggerDriverException($error);
 			}
 
-			usleep(50 * 1000); // 50ms
+			$this->usleep(50 * 1000); // 50ms
 		}
 
 		throw new AppLoggerDriverException($error);
+	}
+
+	/**
+	 * Allow this method to be mocked
+	 */
+	protected function usleep(int $microSeconds): void
+	{
+		usleep($microSeconds);
 	}
 }
