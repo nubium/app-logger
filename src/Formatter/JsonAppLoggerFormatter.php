@@ -17,7 +17,7 @@ class JsonAppLoggerFormatter implements IAppLoggerFormatter
 			'date_time' => $dateTime->format(DateTimeInterface::RFC3339),
 			'request_id' => $identifier->toString(),
 			'app_name' => $appName,
-		]);
+		], JSON_INVALID_UTF8_SUBSTITUTE);
 
 		if ($encodedData === false) {
 			throw new AppLoggerFormatterException(json_last_error_msg());
