@@ -46,4 +46,29 @@ class JsonAppLoggerFormatterTest extends TestCase
 			'app_name' => 'app',
 		], $json);
 	}
+
+    /**
+     * @throws AppLoggerFormatterException
+     * @throws JsonException
+     */
+    public function testInvalidUtf8Character(): void
+    {
+        $identifier = new RandomIntAppLoggerIdentifier();
+        $formatter = new JsonAppLoggerFormatter();
+        $now = new DateTimeImmutable();
+
+        $data = [
+            // invalid utf-8 character
+            'x' => chr(193)
+        ];
+
+        $json = json_decode($formatter->format('app', $now, $identifier, $data), true, flags: JSON_THROW_ON_ERROR);
+
+        $this->assertSame([
+            'x' => "\u{FFFD}",
+            'date_time' => $now->format(DateTimeInterface::RFC3339),
+            'request_id' => $identifier->toString(),
+            'app_name' => 'app',
+        ], $json);
+    }
 }
